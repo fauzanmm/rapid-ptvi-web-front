@@ -126,7 +126,8 @@
       shiftTable = await fetchShiftTable();
       // console.log(data);
       // console.log(shiftSummary);
-      console.log(shiftTable);
+      // console.log(shiftTable);
+      // console.log(shiftTable.crews);
     }, 2000);
 
     return () => {
@@ -142,7 +143,7 @@
 <main class="w-full my-6 px-20 overflow-x-auto flex-1 overflow-y-auto">
   <div class="flex justify-between">
     <div class="flex flex-col pb-8">
-      <h1 class="text-3xl text-gray-300 font-bold">Fuel Time Loss</h1>
+      <h1 class="text-3xl text-gray-300 font-bold">Engine Detection</h1>
       <h2 class="text-lg text-gray-300">Summary Current & Shift Report</h2>
     </div>
 
@@ -305,21 +306,27 @@
         <ul class="flex flex-row gap-10">
           <li>
             <p class="text-gray-300">
-              Date : <span>{shiftTableInfo.date}</span>
+              Date : <span
+                >{moment
+                  .utc(shiftTable.date)
+                  .format("dddd, DD MMMM yyyy")}</span
+              >
             </p>
           </li>
           <li>
-            <p class="text-gray-300">Crew : <span>a</span></p>
+            <p class="text-gray-300">
+              Crew : <span>{shiftTable.crews}</span>
+            </p>
           </li>
           <li>
             <p class="text-gray-300">
-              Shift : <span>{shiftTableInfo.shift}</span>
+              Shift : <span>{shiftTable.shiftName}</span>
             </p>
           </li>
         </ul>
         <p class="text-gray-300">
           Last updated : <span
-            >{moment(shiftTableInfo.date).format("HH:mm:ss")}</span
+            >{moment.utc(shiftTable.date).format("hh:mm:ss A")}</span
           >
         </p>
       </div>
