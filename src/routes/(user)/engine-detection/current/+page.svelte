@@ -39,6 +39,7 @@
   let shiftSummary = [];
   let shiftTable = [];
   let shiftTableInfo = [];
+  let crewText = "";
   let department = "hatari";
   let intervalId;
 
@@ -127,7 +128,6 @@
       // console.log(data);
       // console.log(shiftSummary);
       // console.log(shiftTable);
-      // console.log(shiftTable.crews);
     }, 2000);
 
     return () => {
@@ -137,6 +137,13 @@
 
   $: if (department) {
     fetchCurrent(department);
+    page = 1;
+    data = [];
+    shiftSummary = [];
+    shiftTable = [];
+  }
+  $: if (shiftTable.crews) {
+    crewText = shiftTable.crews.map((c) => c.Crew).join(", ");
   }
 </script>
 
@@ -307,15 +314,15 @@
           <li>
             <p class="text-gray-300">
               Date : <span
-                >{moment
-                  .utc(shiftTable.date)
-                  .format("dddd, DD MMMM yyyy")}</span
+                >{shiftTable.date
+                  ? moment.utc(shiftTable.date).format("dddd, DD MMMM yyyy")
+                  : "-"}</span
               >
             </p>
           </li>
           <li>
             <p class="text-gray-300">
-              Crew : <span>{shiftTable.crews}</span>
+              Crew : <span>{crewText}</span>
             </p>
           </li>
           <li>
@@ -326,7 +333,9 @@
         </ul>
         <p class="text-gray-300">
           Last updated : <span
-            >{moment.utc(shiftTable.date).format("hh:mm:ss A")}</span
+            >{shiftTable.date
+              ? moment.utc(shiftTable.date).format("hh:mm:ss A")
+              : "-"}</span
           >
         </p>
       </div>
