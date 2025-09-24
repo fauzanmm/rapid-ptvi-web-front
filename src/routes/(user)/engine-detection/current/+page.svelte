@@ -322,12 +322,14 @@
           </li>
           <li>
             <p class="text-gray-300">
-              Crew : <span>{crewText}</span>
+              Crew : <span>{crewText ? crewText : "-"}</span>
             </p>
           </li>
           <li>
             <p class="text-gray-300">
-              Shift : <span>{shiftTable.shiftName}</span>
+              Shift : <span
+                >{shiftTable.shiftName ? shiftTable.shiftName : "-"}</span
+              >
             </p>
           </li>
         </ul>

@@ -22,12 +22,12 @@
   const routesList = [
     {
       name: "Current Shift",
-      path: "/fuel-time-loss/current",
+      path: "/engine-detection/current",
       icon: "fa-solid fa-clock text-xl",
     },
     {
       name: "Month Summary",
-      path: "/fuel-time-loss/historical",
+      path: "/engine-detection/historical",
       icon: "fa-regular fa-folder-open text-xl",
     },
   ];
