@@ -138,6 +138,7 @@
   $: if (department) {
     fetchCurrent(department);
     page = 1;
+    firstPage = 1;
     data = [];
     shiftSummary = [];
     shiftTable = [];
@@ -202,7 +203,7 @@
             <div
               class="text-4xl font-bold text-white text-center hover:text-blue-300"
             >
-              {shiftSummary.lossHour || "00:00"}
+              {shiftSummary.lossHour || "--"}
             </div>
           </div>
         </div>
@@ -219,7 +220,7 @@
             <h2
               class="text-lg text-white hover:text-blue-300 transition-colors duration-200"
             >
-              Loss Fuel
+              Loss Fuel <span class="text-gray-400 text-sm">(Liter)</span>
             </h2>
           </div>
 
@@ -228,7 +229,7 @@
             <div
               class="text-4xl font-bold text-white text-center hover:text-blue-300"
             >
-              {shiftSummary.lossFuel || "0.00"}
+              {shiftSummary.lossFuel || "--"}
             </div>
           </div>
         </div>
@@ -282,7 +283,7 @@
                     </p>
                   </div>
                   <div class="flex flex-col items-center">
-                    <p class="text-xs text-gray-400">
+                    <p class="text-xs text-gray-400 truncate max-w-[160px]">
                       {truck.Reason}
                     </p>
                   </div>
@@ -357,7 +358,7 @@
               <th scope="col" class="px-6 py-3">Reason</th>
               <th scope="col" class="px-6 py-3">FBR</th>
               <th scope="col" class="px-6 py-3">RPM</th>
-              <th scope="col" class="px-6 py-3">FuelLoss</th>
+              <th scope="col" class="px-6 py-3">Fuel Loss</th>
               <th scope="col" class="px-6 py-3">Time</th>
             </tr>
           </thead>

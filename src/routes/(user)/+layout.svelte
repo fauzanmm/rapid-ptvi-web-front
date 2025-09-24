@@ -11,13 +11,13 @@
 
 <!-- Layout wrapper -->
 <div
-  class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen min-w-screen flex overflow-y-auto overflow-x-auto"
+  class="bg-gradient-to-br from-gray-900 to-gray-800 flex h-screen overflow-x-auto"
 >
   <!-- Sidebar -->
   <Sidebar />
 
   <!-- Konten utama (Header + Page) -->
-  <div class="flex flex-col flex-1 min-h-screen">
+  <div class="flex flex-col flex-1 full-h-screen">
     <Header />
     <main class="flex-1 overflow-y-auto">
       {@render children()}
