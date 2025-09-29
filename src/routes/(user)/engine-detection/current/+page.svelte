@@ -128,7 +128,7 @@
       // console.log(data);
       // console.log(shiftSummary);
       // console.log(shiftTable);
-    }, 2000);
+    }, 3000);
 
     return () => {
       clearInterval(intervalId);
