@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-  <title>RAPID - Fuel Time Loss</title>
+  <title>RAPID - Engine Detection</title>
 </svelte:head>
 
 <!-- Layout wrapper -->
