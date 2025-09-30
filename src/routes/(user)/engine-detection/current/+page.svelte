@@ -8,30 +8,9 @@
     shiftSummaryFuelTimeLoss,
     shiftTableFuelTimeLoss,
   } from "$lib/api/fuel-time-loss";
+  import departments from "$lib/data/departments.json";
 
-  const optionsDepartment = [
-    { param: "hatari", value: "hatari", label: "HATARI" },
-    { param: "bintang", value: "bintang", label: "BINTANG" },
-    { param: "coal", value: "coal", label: "COAL" },
-    {
-      param: "mine%20services",
-      value: "mine services",
-      label: "MINE SERVICES",
-    },
-    { param: "thiess", value: "thiess", label: "THIESS" },
-    { param: "pama", value: "pama", label: "PAMA" },
-    { param: "other", value: "other", label: "OTHER" },
-    { param: "jupiter", value: "jupiter", label: "JUPITER" },
-    { param: "msd", value: "msd", label: "MSD" },
-    { param: "cphd", value: "cphd", label: "CPHD" },
-    { param: "geology", value: "geology", label: "GEOLOGY" },
-    { param: "mo", value: "mo", label: "MO" },
-    {
-      param: "drill%20%26%20blast",
-      value: "drill & blast",
-      label: "DRILL & BLAST",
-    },
-  ];
+  const optionsDepartment = departments;
 
   moment.locale("id");
 

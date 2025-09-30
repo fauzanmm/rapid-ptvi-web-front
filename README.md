@@ -32,6 +32,8 @@ front/
  │ │ ├── components/            # Component UI building blocks
  │ │ │ ├── Header.svelte        
  │ │ │ └── Sidebar.svelte       
+ │ │ ├── data/                  # reusable data
+ │ │ │ └── departments.json
  │ │ └── stores/                # State management 
  │ │   └── loading.js           # Loading animation 
  │ ├── routes/              
