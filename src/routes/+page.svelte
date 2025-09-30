@@ -1,3 +1,7 @@
+<svelte:head>
+  <title>RAPID</title>
+</svelte:head>
+
 <div
   class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen min-w-screen flex overflow-y-auto overflow-x-auto justify-center items-center flex-col"
 >
