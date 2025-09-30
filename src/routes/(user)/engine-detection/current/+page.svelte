@@ -84,10 +84,6 @@
     firstPage = (page - 1) * limit + 1;
     lastPage = firstPage - 1 + limit;
   }
-  // let date = moment(shiftTable.date).format("DD MMMM YYYY");
-  // let currentShift = shiftTable.shift;
-  // let lastUpdated = moment(shiftTable.date).format("HH:mm:ss");
-  // let crew = shiftTable.crews.map((c) => c.Crew).join(", ");
 
   async function fetchCurrent() {
     const result = await currentFuelTimeLoss(department);
