@@ -1,4 +1,4 @@
-# RAPID Website - Engine Detection | Frontend Svelte
+# RAPID Website - Engine Detection | Fronend Svelte
 
 ### Site : PT Kaltim Prima Coal
 
@@ -98,7 +98,7 @@ You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
 
-## ⚙️ Deployment to LAN SERVER
+# ⚙️ Deployment to LAN SERVER
 
 > ## Local Side
 
