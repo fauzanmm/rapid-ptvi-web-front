@@ -1,4 +1,4 @@
-# RAPID Website - Engine Detection | Fronend Svelte
+# RAPID Website - Engine Detection | Frontend Svelte
 
 ### Site : PT Kaltim Prima Coal
 
@@ -97,3 +97,82 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+
+## ⚙️ Deployment to LAN SERVER
+
+> ## Local Side
+
+#### 1. Pastikan adapter-node sudah terinstall
+
+```bash
+# check di package.json, if there's not avail so run this
+npm install -D @sveltejs/adapter-node
+```
+
+#### 2. Hapus folder build dan cache lama
+
+```bash
+# clear cache, only use for any major changes
+rm -rf .svelte-kit build
+
+# if using powershel
+rmdir /s /q .svelte-kit
+rmdir /s /q build
+```
+
+#### 3. Regenerate ulang .svelte-kit dan build
+
+Setelah itu .svelte-kit/tsconfig.json akan otomatis dibuat ulang.
+
+```bash
+# build static
+npm install
+npm run build
+```
+
+> ## Server Site Side
+
+#### 1. Install node.js dan npm
+
+Download node.js langsung dari website resmi https://nodejs.org/en/download/
+
+```bash
+# check node version
+node -v
+
+# check npm version
+npm -v
+```
+
+#### 2. Copy paste the files
+
+- Bisa copy seluruh folder project, atau hanya
+
+  - package.json
+  - package-lock.json
+  - build/
+
+- Taruh dalam folder
+
+```bash
+# go into the folder
+cd /folder
+```
+
+#### 3. Install Dependencies
+
+Running pada direktori /folder
+
+```bash
+npm install --production
+```
+
+#### 4. Run the Projects
+
+```bash
+node build
+
+# change port
+set PORT=3001
+node build
+```
