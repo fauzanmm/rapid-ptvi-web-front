@@ -148,10 +148,10 @@ npm -v
 
 - Bisa copy seluruh folder project, atau hanya
 
-  - package.json
-  - package-lock.json
   - build/
   - .env
+  - package-lock.json
+  - package.json
 
 - Taruh dalam folder
 
