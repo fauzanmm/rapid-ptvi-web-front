@@ -151,6 +151,7 @@ npm -v
   - package.json
   - package-lock.json
   - build/
+  - .env
 
 - Taruh dalam folder
 
