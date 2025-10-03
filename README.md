@@ -109,7 +109,14 @@ You can preview the production build with `npm run preview`.
 npm install -D @sveltejs/adapter-node
 ```
 
-#### 2. Hapus folder build dan cache lama
+#### 2. Ubah file .env
+
+```bash
+# sesuaikan dengan backend server
+VITE_URL_API='http://ipaddress:port/api/v1'
+```
+
+#### 3. Hapus folder build dan cache lama
 
 ```bash
 # clear cache, only use for any major changes
@@ -144,36 +151,43 @@ node -v
 npm -v
 ```
 
-#### 2. Copy paste the files
+#### 2. Copy paste PM2 untuk monitoring
+
+```bash
+# Copy paste pm2 folder pada direktori berikut
+C:\Users\DIGITALROOM-PC04\AppData\Roaming\npm\node_modules
+
+# Copy paste 2 file (pm2.cmd, pm2 -> file tanpan extension) pada direktori berikut
+C:\Users\DIGITALROOM-PC04\AppData\Roaming\npm
+```
+
+#### 3. Copy paste the files
 
 - Bisa copy seluruh folder project, atau hanya
 
   - build/
-  - .env
-  - package-lock.json
-  - package.json
+  - node_modules
 
-- Taruh dalam folder
+- Taruh dalam folder front
 
 ```bash
 # go into the folder
-cd /folder
+cd /front
 ```
 
-#### 3. Install Dependencies
+#### 4. Change PORT / IP Address
 
-Running pada direktori /folder
+Go to file index.js file
 
 ```bash
-npm install --production
+# front/build/index.js
+const path = env('SOCKET_PATH', false);
+const host = env('HOST', '0.0.0.0'); # IP Address
+const port = env('PORT', !path && '4000'); # change this port
 ```
 
-#### 4. Run the Projects
+#### 5. Run the Projects
 
 ```bash
-node build
-
-# change port
-set PORT=3001
 node build
 ```
