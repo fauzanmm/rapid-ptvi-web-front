@@ -189,6 +189,7 @@ const port = env('PORT', !path && '4000'); # change this port
 #### 5. Run the Projects
 
 ```bash
+# using node
 node build
 node build/index.js
 
