@@ -190,4 +190,9 @@ const port = env('PORT', !path && '4000'); # change this port
 
 ```bash
 node build
+node build/index.js
+
+# using pm2
+cd front
+pm2 start --name engine-detection-front build/index.js
 ```
