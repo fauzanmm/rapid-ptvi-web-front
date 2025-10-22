@@ -51,7 +51,7 @@
 
         {#if isOpen}
           <span
-            transition:slide={{ axis: "x", duration: 300 }}
+            transition:slide={{ axis: "x", duration: 100 }}
             class="whitespace-nowrap overflow-hidden text-ellipsis text-sm ml-4"
           >
             {routeList.name}
