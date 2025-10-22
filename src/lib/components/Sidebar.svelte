@@ -74,7 +74,7 @@
       0 4px 6px -4px rgba(0, 0, 0, 0.1); /* shadow-lg */
     height: 100vh; /* h-screen */
     color: white; /* text-white */
-    width: 52px; /* w-13, karena 13 * 4px = 52px */
+    width: 58px; /* w-13, karena 13 * 4px = 52px */
     padding-left: 4px; /* px-1 => padding: 0 0.25rem */
     padding-right: 4px;
     border-right: 1px solid #374151; /* border-r-gray-700 */
