@@ -3,7 +3,7 @@
 </svelte:head>
 
 <div
-  class="bg-gradient-to-br from-gray-900 to-gray-800 min-h-screen min-w-screen flex overflow-y-auto overflow-x-auto justify-center items-center flex-col"
+  class="bg-linear-to-br from-gray-900 to-gray-800 min-h-screen min-w-screen flex overflow-y-auto overflow-x-auto justify-center items-center flex-col"
 >
   <h1 class="text-gray-100 font-bold text-xl animate-fade-in">
     Welcome to Rapid Web

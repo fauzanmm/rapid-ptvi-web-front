@@ -1,6 +1,8 @@
 <script>
   import { isLoading } from "$lib/stores/loading";
   import { beforeNavigate, afterNavigate } from "$app/navigation";
+  import "../app.css";
+  let { children } = $props();
 
   beforeNavigate(() => {
     isLoading.set(true);
@@ -19,9 +21,10 @@
   </div>
 {/if}
 
-<slot />
+{@render children()}
 
-<style>
+<style lang="postcss">
+  @reference "tailwindcss";
   .loader {
     width: 50px;
     padding: 8px;

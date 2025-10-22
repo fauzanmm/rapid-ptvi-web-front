@@ -11,7 +11,7 @@
 
 <!-- Layout wrapper -->
 <div
-  class="bg-gradient-to-br from-gray-900 to-gray-800 flex h-screen overflow-x-auto"
+  class="bg-linear-to-br from-gray-900 to-gray-800 flex h-screen overflow-x-auto"
 >
   <!-- Sidebar -->
   <Sidebar />
@@ -24,3 +24,7 @@
     </main>
   </div>
 </div>
+
+<style lang="postcss">
+  @reference "tailwindcss";
+</style>

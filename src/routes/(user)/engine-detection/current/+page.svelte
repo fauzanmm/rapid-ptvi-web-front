@@ -324,7 +324,7 @@
       >
         <table class="w-full text-sm text-left rtl:text-right text-gray-300">
           <thead
-            class="sticky top-0 z-10 text-base bg-gray-50 bg-gray-700 text-gray-200 text-center"
+            class="sticky top-0 z-10 text-base bg-gray-700 text-gray-200 text-center"
           >
             <tr>
               <th scope="col" class="px-6 py-3">Truck</th>
