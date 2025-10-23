@@ -220,7 +220,7 @@
               <!-- Card 1 -->
               {#each data as truck}
                 <div
-                  class="bg-[#FF0000] bg-opacity-35 rounded-xl px-2 h-[145px] card-hover"
+                  class="bg-red-900 bg-opacity-35 rounded-xl px-2 h-[145px] card-hover"
                 >
                   <div class="flex justify-between pt-2">
                     <p
@@ -232,7 +232,8 @@
                     <p
                       class="text-white text-xs hover:text-gray-300 transition-colors duration-200"
                     >
-                      {truck.RPM ? truck.RPM.toFixed(0) : "-"} <span>Rpm</span>
+                      {truck.RPM ? truck.RPM.toFixed(0) : "-"}
+                      <span>Rpm</span>
                     </p>
                   </div>
                   <div class="flex flex-col items-center pt-1">
@@ -241,7 +242,9 @@
                     </p>
                   </div>
                   <div class="flex flex-col items-center">
-                    <p class="text-xs text-gray-400">{truck.Location}</p>
+                    <p class="text-xs text-gray-400">
+                      {truck.Location}
+                    </p>
                   </div>
                   <div class="flex flex-col items-center">
                     <p class="text-xs text-gray-400">
