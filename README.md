@@ -52,6 +52,7 @@ front/
  ├── .env                       # database url (check notion or ask administrator)
  ├── .gitignore             
  ├── .npmrc
+ ├── ecosystem.config.cjs       # configuration for PM2 with rapid-front aplication name
  ├── jsonconfig.json
  ├── package-lock.json      
  ├── package.json 
@@ -66,7 +67,7 @@ front/
 # install dependencies
 npm install
 
-# create .env file
+# create .env file, its for backend or API url so front can get data from this url
 VITE_URL_API='http://ip:port/routing'
 ```
 
@@ -196,4 +197,44 @@ node build/index.js
 # using pm2
 cd front
 pm2 start --name engine-detection-front build/index.js
+```
+
+# ⚙️ Update in LAN SERVER
+
+### 1. Make sure PM2
+
+- Check window service, search PM2.
+- Uninstall PM2
+
+```bash
+# uninstall pm2, open cmd administrator
+pm2-service-uninstall
+```
+
+### 2. Copy paste the file
+
+- Copy paste necessary file or updated file
+  - node_modules/
+  - build/
+- Running start pm2
+
+```bash
+# start pm2, open cmd administrator
+pm2 start ecosystem.config.cjs --env production
+
+# before pm2 save, run pm2 start backend
+pm2 save
+```
+
+### 3. Install pm2-service-windows
+
+- Install pm2 service
+
+```bash
+# same like the step before on Deployment LAN Server
+pm2-service-install -n PM2
+....
+....
+....
+# check installment on Deployment LAN Server
 ```
