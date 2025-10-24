@@ -232,7 +232,9 @@
                     <p
                       class="text-white text-xs hover:text-gray-300 transition-colors duration-200"
                     >
-                      {truck.RPM ? truck.RPM.toFixed(0) : "-"}
+                      {truck.RPM !== null && truck.RPM !== undefined
+                        ? truck.RPM.toFixed(0)
+                        : "-"}
                       <span>Rpm</span>
                     </p>
                   </div>
@@ -261,19 +263,22 @@
                     </p>
                   </div>
                   <div class="flex flex-col items-center">
-                    <p class="text-xs text-gray-400 truncate max-w-[160px]">
+                    <p class="text-xs text-gray-400 truncate max-w-40">
                       {truck.Reason}
                     </p>
                   </div>
                   <div class="flex flex-col items-center">
                     <p class="text-xs text-gray-400">
                       {#if truck.TimeFuelRate}
-                        {new Date(truck.TimeRPM)
+                        {new Date(truck.TimeFuelRate)
                           .toISOString()
                           .replace("T", " ")
                           .replace("Z", "")}
                       {:else}
-                        -
+                        {new Date(truck.TimeRPM)
+                          .toISOString()
+                          .replace("T", " ")
+                          .replace("Z", "")}
                       {/if}
                     </p>
                   </div>
@@ -312,13 +317,17 @@
             </p>
           </li>
         </ul>
-        <p class="text-gray-300">
-          Last updated : <span
-            >{shiftTable.date
-              ? moment.utc(shiftTable.date).format("hh:mm:ss A")
-              : "-"}</span
-          >
-        </p>
+        <!-- Container Last Updated and Data Downloader -->
+        <div class="flex gap-4 items-center">
+          <p class="text-gray-300">
+            Last updated : <span
+              >{shiftTable.date
+                ? moment.utc(shiftTable.date).format("hh:mm:ss A")
+                : "-"}</span
+            >
+          </p>
+          <button>download</button>
+        </div>
       </div>
 
       <!-- Table List -->
@@ -363,12 +372,15 @@
                 >
                 <td class="px-6 py-4 text-center"
                   >{#if truck.TimeFuelRate}
-                    {new Date(truck.TimeRPM)
+                    {new Date(truck.TimeFuelRate)
                       .toISOString()
                       .replace("T", " ")
                       .replace("Z", "")}
                   {:else}
-                    -
+                    {new Date(truck.TimeRPM)
+                      .toISOString()
+                      .replace("T", " ")
+                      .replace("Z", "")}
                   {/if}</td
                 >
               </tr>

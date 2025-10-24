@@ -1,3 +1,4 @@
+// Get data current fuel time
 export const currentFuelTimeLoss = async (department) => {
   const url = new URL(
     `${import.meta.env.VITE_URL_API}/fuelTimeLoss/current/${department}`
