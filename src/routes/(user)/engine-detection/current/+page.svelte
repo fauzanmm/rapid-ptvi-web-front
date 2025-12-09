@@ -8,9 +8,9 @@
     shiftSummaryFuelTimeLoss,
     shiftTableFuelTimeLoss,
   } from "$lib/api/fuel-time-loss";
-  import departments from "$lib/data/departments.json";
+  // import departments from "$lib/data/departments.json";
 
-  const optionsDepartment = departments;
+  // const optionsDepartment = departments;
 
   moment.locale("id");
 
@@ -110,14 +110,6 @@
     };
   });
 
-  $: if (department) {
-    fetchCurrent(department);
-    page = 1;
-    firstPage = 1;
-    data = [];
-    shiftSummary = [];
-    shiftTable = [];
-  }
   $: if (shiftTable.crews) {
     crewText = shiftTable.crews.map((c) => c.Crew).join(", ");
   }
@@ -125,31 +117,11 @@
 
 <main class="w-full my-6 px-20 overflow-x-auto flex-1 overflow-y-auto">
   <div class="flex justify-between">
+    <!-- Title and subtitle -->
     <div class="flex flex-col pb-8">
       <h1 class="text-3xl text-gray-300 font-bold">Engine Detection</h1>
       <h2 class="text-lg text-gray-300">Summary Current & Shift Report</h2>
     </div>
-
-    <!-- Filter Department -->
-    <!-- <div class="mx-4 flex flex-row items-start">
-      <form>
-        <label
-          for="department"
-          class="block text-sm font-medium text-white mb-2">Department</label
-        >
-        <select
-          id="department"
-          class="p-2 w-48 rounded-md bg-gray-800 text-white border border-gray-600"
-          bind:value={department}
-        >
-          {#each optionsDepartment as optionDepartment}
-            <option value={optionDepartment.param}
-              >{optionDepartment.label}</option
-            >
-          {/each}
-        </select>
-      </form>
-    </div> -->
   </div>
 
   <div class="flex flex-row gap-4">
