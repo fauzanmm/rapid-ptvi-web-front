@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Production",
+    "path": "/production",
+    "icon": "fa-regular fa-file text-xl",
+    "isOpen": false,
+    "subRoutes": [
+      { "name": "Production Cycle", "path": "/production/cycle" },
+      { "name": "Status and Time", "path": "/production/status" }
+    ]
+  },
+  {
+    "name": "Engine Detection",
+    "path": "/engine-detection",
+    "icon": "fa-solid fa-gas-pump text-xl",
+    "isOpen": false,
+    "subRoutes": [
+      { "name": "Current Summary", "path": "/engine-detection/current" },
+      { "name": "Month Summary", "path": "/engine-detection/historical" }
+    ]
+  }
+]
