@@ -1,30 +1,34 @@
 <script>
   import { slide } from "svelte/transition";
   import { page } from "$app/stores";
-  import data from "../data/sidebar.json";
 
-  let isOpen = false;
-  // Gunakan structuredClone untuk memastikan data yang diimpor mutable
-  let routesList = structuredClone(data);
-
-  // Menggunakan Svelte Reactivity Label (Classic $:)
   $: currentUrl = $page.url.pathname;
 
-  $: {
-    // Dipicu setiap kali currentUrl berubah
-    routesList.forEach((route) => {
-      if (route.subRoutes) {
-        // Tentukan apakah rute induk ini seharusnya terbuka
-        const shouldBeOpen = currentUrl.startsWith(route.path);
+  let isOpen = false;
 
-        if (route.isOpen !== shouldBeOpen) {
-          route.isOpen = shouldBeOpen;
-        }
-      }
-    });
-
-    routesList = routesList;
-  }
+  // Gunakan 'let' agar bisa ditetapkan ulang (re-assign)
+  let routesList = [
+    {
+      name: "Production",
+      path: "/production",
+      icon: "fa-regular fa-file text-xl",
+      isOpen: false,
+      subRoutes: [
+        { name: "Production Cycle", path: "/production/cycle" },
+        { name: "Status and Time", path: "/production/status" },
+      ],
+    },
+    {
+      name: "Engine Detection",
+      path: "/engine-detection",
+      icon: "fa-solid fa-gas-pump text-xl",
+      isOpen: false,
+      subRoutes: [
+        { name: "Current Summary", path: "/engine-detection/current" },
+        { name: "Month Summary", path: "/engine-detection/historical" },
+      ],
+    },
+  ];
 
   // 1. Fungsi Toggle Menu List
   function toggle() {
@@ -42,16 +46,17 @@
 
   // 2. Fungsi Toggle Sub-Menu
   function toggleSub(routeObject) {
-    // Toggle status isOpen
     routeObject.isOpen = !routeObject.isOpen;
-    // Pemicu reaktivitas manual
+    // Pemicu reaktivitas
     routesList = routesList;
   }
 
-  // 3. Fungsi isActive
+  // 3. Fungsi isActive Disederhanakan
   function isActive(routeObject) {
     const routePath = routeObject.path;
 
+    // Rute sederhana hanya cocok jika sama persis.
+    // Rute induk cocok jika currentUrl dimulai dengan path induk tersebut.
     return routeObject.subRoutes
       ? currentUrl.startsWith(routePath)
       : currentUrl === routePath;
