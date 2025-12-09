@@ -131,7 +131,7 @@
     </div>
 
     <!-- Filter Department -->
-    <div class="mx-4 flex flex-row items-start">
+    <!-- <div class="mx-4 flex flex-row items-start">
       <form>
         <label
           for="department"
@@ -149,7 +149,7 @@
           {/each}
         </select>
       </form>
-    </div>
+    </div> -->
   </div>
 
   <div class="flex flex-row gap-4">

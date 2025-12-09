@@ -7,7 +7,7 @@
       <!-- <i class="fas fa-address-book text-white text-2xl mr-3"></i> -->
       <div class="text-white font-bold text-xl">RAPID</div>
     </a>
-    <h1 class="text-gray-100 font-bold text-xl">KPC</h1>
+    <h1 class="text-gray-100 font-bold text-xl">VALE Indonesia</h1>
     <nav>
       <ul class="flex space-x-6">
         <li>
