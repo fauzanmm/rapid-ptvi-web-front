@@ -10,17 +10,19 @@
   let routesList = [
     {
       name: "Production",
-      path: "/production",
+      parent: "/production",
+      path: "/",
       icon: "fa-regular fa-file text-xl",
       isOpen: false,
       subRoutes: [
-        { name: "Production Cycle", path: "/production/cycle" },
-        { name: "Status and Time", path: "/production/status" },
+        { name: "Production Cycle", path: "/" },
+        { name: "Status and Time", path: "/" },
       ],
     },
     {
       name: "Engine Detection",
-      path: "/engine-detection",
+      parent: "/engine-detection",
+      path: "/engine-detection/current",
       icon: "fa-solid fa-gas-pump text-xl",
       isOpen: false,
       subRoutes: [
@@ -53,7 +55,7 @@
 
   // 3. Fungsi isActive Disederhanakan
   function isActive(routeObject) {
-    const routePath = routeObject.path;
+    const routePath = routeObject.parent;
 
     // Rute sederhana hanya cocok jika sama persis.
     // Rute induk cocok jika currentUrl dimulai dengan path induk tersebut.
