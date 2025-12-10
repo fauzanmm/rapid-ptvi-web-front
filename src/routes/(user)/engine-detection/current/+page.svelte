@@ -3,6 +3,12 @@
   import prettyMilliseconds from "pretty-ms";
   import moment from "moment";
   import { socket } from "$lib/api/socket";
+  import {
+    currentFuelTimeLoss,
+    shiftFuelTimeLoss,
+    shiftSummaryFuelTimeLoss,
+    shiftTableFuelTimeLoss,
+  } from "$lib/api/fuel-time-loss";
 
   moment.locale("id");
 
@@ -20,7 +26,28 @@
 
   let autoRefreshInterval;
 
-  function fetchShiftTable() {
+  // ================================
+  // FETCHING DATA
+  // ================================
+  async function fetchCurrent() {
+    const result = await currentFuelTimeLoss(department);
+    return (data = result.data);
+  }
+
+  async function fetchShiftSummary() {
+    const result = await shiftSummaryFuelTimeLoss(department);
+    const lossFuel = result.data.lossFuel.toFixed(2);
+    const lossHour = prettyMilliseconds(result.data.lossHour * 1000, {
+      colonNotation: true,
+    });
+    shiftSummary = {
+      lossFuel: lossFuel || "0.00",
+      lossHour: lossHour || "00:00",
+    };
+    return shiftSummary;
+  }
+
+  async function fetchShiftTable() {
     const skip = (page - 1) * limit;
 
     socket.emit(
@@ -35,7 +62,7 @@
   // ================================
   // PAGINATION HANDLERS
   // ================================
-  function handleNextPage() {
+  async function handleNextPage() {
     if (!shiftTable.totalPage) return;
     if (page < shiftTable.totalPage) {
       page++;
@@ -43,19 +70,19 @@
     }
   }
 
-  function handlePreviousPage() {
+  async function handlePreviousPage() {
     if (page > 1) {
       page--;
       fetchShiftTable();
     }
   }
 
-  function handleFirstPage() {
+  async function handleFirstPage() {
     page = 1;
     fetchShiftTable();
   }
 
-  function handleLastPage() {
+  async function handleLastPage() {
     if (shiftTable.totalPage) {
       page = shiftTable.totalPage;
       fetchShiftTable();
@@ -70,10 +97,13 @@
   // ================================
   // SOCKET LISTENERS
   // ================================
-  function registerSocketListeners() {
+  async function registerSocketListeners() {
     socket.on("connect", () => {
       // console.log("Connected:", socket.id);
-      fetchShiftTable(); // fetch first page saat connect
+      // fetch first page saat connect
+      fetchCurrent();
+      fetchShiftSummary();
+      fetchShiftTable();
     });
 
     socket.on("currentFuelTimeLoss:update", (payload) => {
@@ -95,7 +125,7 @@
     });
   }
 
-  function unregisterSocketListeners() {
+  async function unregisterSocketListeners() {
     socket.off("connect");
     socket.off("currentFuelTimeLoss:update");
     socket.off("shiftSummaryFuelTimeLoss:update");
@@ -105,20 +135,23 @@
   // ================================
   // AUTO-REFRESH SHIFT TABLE
   // ================================
-  function startAutoRefresh() {
+  async function startAutoRefresh() {
     stopAutoRefresh(); // pastikan tidak ada interval ganda
     autoRefreshInterval = setInterval(() => {
       fetchShiftTable(); // refresh page yang sedang dibuka
     }, 60000); // tiap 60 detik
   }
 
-  function stopAutoRefresh() {
+  async function stopAutoRefresh() {
     if (autoRefreshInterval) clearInterval(autoRefreshInterval);
   }
 
-  onMount(() => {
-    registerSocketListeners();
-    startAutoRefresh();
+  onMount(async () => {
+    await fetchShiftSummary();
+    await fetchShiftTable();
+    await fetchCurrent();
+    await registerSocketListeners();
+    await startAutoRefresh();
 
     return () => {
       stopAutoRefresh();
@@ -320,61 +353,65 @@
 
       <!-- Table List -->
       <div
-        class="relative overflow-x-auto rounded-[15px] h-[695px] shadow-lg border border-gray-700"
+        class="relative shadow-lg border border-gray-700 flex flex-col h-[695px]"
       >
-        <table class="w-full text-sm text-left rtl:text-right text-gray-300">
-          <thead
-            class="sticky top-0 z-10 text-base bg-gray-700 text-gray-200 text-center"
+        <div class="overflow-x-auto overflow-y-auto flex-1">
+          <table
+            class="w-full text-sm text-left rtl:text-right text-gray-300 rounded-xl border border-gray-700"
           >
-            <tr>
-              <th scope="col" class="px-6 py-3">Truck</th>
-              <th scope="col" class="px-6 py-3">Location</th>
-              <th scope="col" class="px-6 py-3">Operator</th>
-              <th scope="col" class="px-6 py-3">Reason</th>
-              <th scope="col" class="px-6 py-3">FBR</th>
-              <th scope="col" class="px-6 py-3">RPM</th>
-              <th scope="col" class="px-6 py-3">Fuel Loss</th>
-              <th scope="col" class="px-6 py-3">Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            {#each shiftTable.data as truck}
-              <tr class="border-b bg-gray-800 border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium whitespace-nowrap text-white text-center"
-                >
-                  {truck.Equipment}
-                </th>
-                <td class="px-6 py-4 text-center">{truck.Location}</td>
-                <td class="px-6 py-4 text-center">{truck.OperatorName}</td>
-                <td class="px-6 py-4 text-center">{truck.Reason}</td>
-                <td class="px-6 py-4 text-center"
-                  >{truck.FuelRate ? truck.FuelRate.toFixed(2) : "-"}</td
-                >
-                <td class="px-6 py-4 text-center"
-                  >{truck.RPM ? truck.RPM.toFixed(2) : "-"}</td
-                >
-                <td class="px-6 py-4 text-center"
-                  >{truck.FuelLoss ? truck.FuelLoss.toFixed(2) : "-"}</td
-                >
-                <td class="px-6 py-4 text-center"
-                  >{#if truck.TimeFuelRate}
-                    {new Date(truck.TimeFuelRate)
-                      .toISOString()
-                      .replace("T", " ")
-                      .replace("Z", "")}
-                  {:else}
-                    {new Date(truck.TimeRPM)
-                      .toISOString()
-                      .replace("T", " ")
-                      .replace("Z", "")}
-                  {/if}</td
-                >
+            <thead
+              class="sticky top-0 z-10 text-base bg-gray-700 text-gray-200 text-center"
+            >
+              <tr>
+                <th scope="col" class="px-6 py-3">Truck</th>
+                <th scope="col" class="px-6 py-3">Location</th>
+                <th scope="col" class="px-6 py-3">Operator</th>
+                <th scope="col" class="px-6 py-3">Reason</th>
+                <th scope="col" class="px-6 py-3">FBR</th>
+                <th scope="col" class="px-6 py-3">RPM</th>
+                <th scope="col" class="px-6 py-3">Fuel Loss</th>
+                <th scope="col" class="px-6 py-3">Time</th>
               </tr>
-            {/each}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {#each shiftTable.data as truck}
+                <tr class="border-b bg-gray-800 border-gray-700">
+                  <th
+                    scope="row"
+                    class="px-6 py-4 font-medium whitespace-nowrap text-white text-center"
+                  >
+                    {truck.Equipment}
+                  </th>
+                  <td class="px-6 py-4 text-center">{truck.Location}</td>
+                  <td class="px-6 py-4 text-center">{truck.OperatorName}</td>
+                  <td class="px-6 py-4 text-center">{truck.Reason}</td>
+                  <td class="px-6 py-4 text-center"
+                    >{truck.FuelRate ? truck.FuelRate.toFixed(2) : "-"}</td
+                  >
+                  <td class="px-6 py-4 text-center"
+                    >{truck.RPM ? truck.RPM.toFixed(2) : "-"}</td
+                  >
+                  <td class="px-6 py-4 text-center"
+                    >{truck.FuelLoss ? truck.FuelLoss.toFixed(2) : "-"}</td
+                  >
+                  <td class="px-6 py-4 text-center"
+                    >{#if truck.TimeFuelRate}
+                      {new Date(truck.TimeFuelRate)
+                        .toISOString()
+                        .replace("T", " ")
+                        .replace("Z", "")}
+                    {:else}
+                      {new Date(truck.TimeRPM)
+                        .toISOString()
+                        .replace("T", " ")
+                        .replace("Z", "")}
+                    {/if}</td
+                  >
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        </div>
 
         {#if shiftTable.totalData >= limit}
           <!-- Sticky Pagination Footer -->
