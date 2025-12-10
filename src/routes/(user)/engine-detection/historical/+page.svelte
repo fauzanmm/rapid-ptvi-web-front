@@ -1,11 +1,13 @@
 <script>
-  import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
-  const port = 3000;
-  const server = "10.138.216.18" || "localhost";
-  const socket = io(`http://${server}:${port}`);
+  // import { io } from "../../../../../public/socket.io.min.js";
+  import { socket } from "$lib/api/socket";
 
-  socket.on("connection", () => {
+  socket.on("connect", () => {
     console.log("user id :" + socket.id);
+  });
+
+  socket.on("currentFuelTimeLoss:update", (data) => {
+    console.log(data);
   });
 </script>
 

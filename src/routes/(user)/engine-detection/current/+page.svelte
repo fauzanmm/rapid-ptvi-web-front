@@ -8,9 +8,14 @@
     shiftSummaryFuelTimeLoss,
     shiftTableFuelTimeLoss,
   } from "$lib/api/fuel-time-loss";
-  // import departments from "$lib/data/departments.json";
 
-  // const optionsDepartment = departments;
+  import { socket } from "$lib/api/socket";
+
+  socket.on("connect", () => {
+    console.log("user id :" + socket.id);
+  });
+
+  // import departments from "$lib/data/departments.json";
 
   moment.locale("id");
 
@@ -64,24 +69,6 @@
     lastPage = firstPage - 1 + limit;
   }
 
-  async function fetchCurrent() {
-    const result = await currentFuelTimeLoss(department);
-    return (data = result.data);
-  }
-
-  async function fetchShiftSummary() {
-    const result = await shiftSummaryFuelTimeLoss(department);
-    const lossFuel = result.data.lossFuel.toFixed(2);
-    const lossHour = prettyMilliseconds(result.data.lossHour * 1000, {
-      colonNotation: true,
-    });
-    shiftSummary = {
-      lossFuel: lossFuel || "0.00",
-      lossHour: lossHour || "00:00",
-    };
-    return shiftSummary;
-  }
-
   async function fetchShiftTable() {
     const queryParams = {
       page,
@@ -92,21 +79,27 @@
   }
 
   onMount(async () => {
-    await fetchShiftSummary();
     await fetchShiftTable();
-    await fetchCurrent();
 
-    intervalId = setInterval(async () => {
-      data = await fetchCurrent();
-      shiftSummary = await fetchShiftSummary();
-      shiftTable = await fetchShiftTable();
-      // console.log(data);
-      // console.log(shiftSummary);
-      // console.log(shiftTable);
-    }, 3000);
+    socket.on("currentFuelTimeLoss:update", (payload) => {
+      data = payload;
+      console.log(data);
+    });
+    socket.on("shiftSummaryFuelTimeLoss:update", (payload) => {
+      const lossFuel = payload.lossFuel.toFixed(2);
+      const lossHour = prettyMilliseconds(payload.lossHour * 1000, {
+        colonNotation: true,
+      });
+      shiftSummary = {
+        lossFuel: lossFuel || "0.00",
+        lossHour: lossHour || "00:00",
+      };
+      console.log(shiftSummary);
+    });
 
     return () => {
-      clearInterval(intervalId);
+      socket.off("currentFuelTimeLoss:update");
+      socket.off("shiftSummaryFuelTimeLoss:update");
     };
   });
 
