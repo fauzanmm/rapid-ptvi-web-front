@@ -1,4 +1,12 @@
 <script>
+  import { io } from "https://cdn.socket.io/4.8.1/socket.io.esm.min.js";
+  const port = 3000;
+  const server = "10.138.216.18" || "localhost";
+  const socket = io(`http://${server}:${port}`);
+
+  socket.on("connection", () => {
+    console.log("user id :" + socket.id);
+  });
 </script>
 
 <main class="w-full my-6 px-20 overflow-x-auto flex-1 overflow-y-auto">
