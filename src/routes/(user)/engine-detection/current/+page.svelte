@@ -2,66 +2,64 @@
   import { onMount } from "svelte";
   import prettyMilliseconds from "pretty-ms";
   import moment from "moment";
-  import {
-    currentFuelTimeLoss,
-    shiftFuelTimeLoss,
-    shiftSummaryFuelTimeLoss,
-    shiftTableFuelTimeLoss,
-  } from "$lib/api/fuel-time-loss";
-
   import { socket } from "$lib/api/socket";
-
-  socket.on("connect", () => {
-    console.log("user id :" + socket.id);
-  });
-
-  // import departments from "$lib/data/departments.json";
 
   moment.locale("id");
 
   let data = [];
-  let shiftSummary = [];
-  let shiftTable = [];
-  let shiftTableInfo = [];
+  let shiftSummary = {};
+  let shiftTable = {};
   let crewText = "";
+
   let department = "hatari";
-  let intervalId;
 
   let page = 1;
   let limit = 50;
   let firstPage = 1;
   let lastPage = limit;
 
-  async function handleNextPage() {
-    page += 1;
-    if (page > shiftTable.totalPage) {
-      page = shiftTable.totalPage;
-      return;
-    }
-    shiftTable = [];
-    return await fetchShiftTable();
+  let autoRefreshInterval;
+
+  function fetchShiftTable() {
+    const skip = (page - 1) * limit;
+
+    socket.emit(
+      "shiftTableFuelTimeLoss:request",
+      { skip, limit, page },
+      (response) => {
+        shiftTable = response;
+      }
+    );
   }
 
-  async function handlePreviousPage() {
-    page -= 1;
-    if (page < 1) {
-      page = 1;
-      return;
+  // ================================
+  // PAGINATION HANDLERS
+  // ================================
+  function handleNextPage() {
+    if (!shiftTable.totalPage) return;
+    if (page < shiftTable.totalPage) {
+      page++;
+      fetchShiftTable();
     }
-    shiftTable = [];
-    return await fetchShiftTable();
   }
 
-  async function handleFirstPage() {
+  function handlePreviousPage() {
+    if (page > 1) {
+      page--;
+      fetchShiftTable();
+    }
+  }
+
+  function handleFirstPage() {
     page = 1;
-    shiftTable = [];
-    return await fetchShiftTable();
+    fetchShiftTable();
   }
 
-  async function handleLastPage() {
-    page = shiftTable.totalPage;
-    shiftTable = [];
-    return await fetchShiftTable();
+  function handleLastPage() {
+    if (shiftTable.totalPage) {
+      page = shiftTable.totalPage;
+      fetchShiftTable();
+    }
   }
 
   async function handleDataPage() {
@@ -69,43 +67,68 @@
     lastPage = firstPage - 1 + limit;
   }
 
-  async function fetchShiftTable() {
-    const queryParams = {
-      page,
-      limit,
-    };
-    const result = await shiftTableFuelTimeLoss(department, queryParams);
-    return (shiftTable = result.data);
-  }
-
-  onMount(async () => {
-    await fetchShiftTable();
+  // ================================
+  // SOCKET LISTENERS
+  // ================================
+  function registerSocketListeners() {
+    socket.on("connect", () => {
+      // console.log("Connected:", socket.id);
+      fetchShiftTable(); // fetch first page saat connect
+    });
 
     socket.on("currentFuelTimeLoss:update", (payload) => {
       data = payload;
-      console.log(data);
-    });
-    socket.on("shiftSummaryFuelTimeLoss:update", (payload) => {
-      const lossFuel = payload.lossFuel.toFixed(2);
-      const lossHour = prettyMilliseconds(payload.lossHour * 1000, {
-        colonNotation: true,
-      });
-      shiftSummary = {
-        lossFuel: lossFuel || "0.00",
-        lossHour: lossHour || "00:00",
-      };
-      console.log(shiftSummary);
     });
 
+    socket.on("shiftSummaryFuelTimeLoss:update", (payload) => {
+      shiftSummary = {
+        lossFuel: payload.lossFuel.toFixed(2),
+        lossHour: prettyMilliseconds(payload.lossHour * 1000, {
+          colonNotation: true,
+        }),
+      };
+    });
+
+    socket.on("shiftTableFuelTimeLoss:update", (payload) => {
+      shiftTable = payload;
+      // console.log(shiftTable);
+    });
+  }
+
+  function unregisterSocketListeners() {
+    socket.off("connect");
+    socket.off("currentFuelTimeLoss:update");
+    socket.off("shiftSummaryFuelTimeLoss:update");
+    socket.off("shiftTableFuelTimeLoss:update");
+  }
+
+  // ================================
+  // AUTO-REFRESH SHIFT TABLE
+  // ================================
+  function startAutoRefresh() {
+    stopAutoRefresh(); // pastikan tidak ada interval ganda
+    autoRefreshInterval = setInterval(() => {
+      fetchShiftTable(); // refresh page yang sedang dibuka
+    }, 60000); // tiap 60 detik
+  }
+
+  function stopAutoRefresh() {
+    if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  }
+
+  onMount(() => {
+    registerSocketListeners();
+    startAutoRefresh();
+
     return () => {
-      socket.off("currentFuelTimeLoss:update");
-      socket.off("shiftSummaryFuelTimeLoss:update");
+      stopAutoRefresh();
+      unregisterSocketListeners();
     };
   });
 
-  $: if (shiftTable.crews) {
-    crewText = shiftTable.crews.map((c) => c.Crew).join(", ");
-  }
+  $: crewText = shiftTable.crews
+    ? shiftTable.crews.map((c) => c.Crew).join(", ")
+    : "";
 </script>
 
 <main class="w-full my-6 px-20 overflow-x-auto flex-1 overflow-y-auto">

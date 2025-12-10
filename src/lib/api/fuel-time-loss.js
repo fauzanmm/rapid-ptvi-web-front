@@ -58,11 +58,13 @@ export const shiftTableFuelTimeLoss = async (params = {}) => {
   );
 
   const searchParams = new URLSearchParams();
+
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null) {
       searchParams.append(key, value);
     }
   });
+
   url.search = searchParams.toString();
 
   const response = await fetch(url.toString(), {

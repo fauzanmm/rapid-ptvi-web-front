@@ -1,14 +1,13 @@
 <script>
-  // import { io } from "../../../../../public/socket.io.min.js";
-  import { socket } from "$lib/api/socket";
+  // import { socket } from "$lib/api/socket";
 
-  socket.on("connect", () => {
-    console.log("user id :" + socket.id);
-  });
+  // socket.on("connect", () => {
+  //   console.log("user id :" + socket.id);
+  // });
 
-  socket.on("currentFuelTimeLoss:update", (data) => {
-    console.log(data);
-  });
+  // socket.on("currentFuelTimeLoss:update", (data) => {
+  //   console.log(data);
+  // });
 </script>
 
 <main class="w-full my-6 px-20 overflow-x-auto flex-1 overflow-y-auto">
