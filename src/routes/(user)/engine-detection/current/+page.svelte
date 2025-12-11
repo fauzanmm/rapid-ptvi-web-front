@@ -7,7 +7,6 @@
     currentFuelTimeLoss,
     shiftFuelTimeLoss,
     shiftSummaryFuelTimeLoss,
-    shiftTableFuelTimeLoss,
   } from "$lib/api/fuel-time-loss";
 
   moment.locale("id");
@@ -51,11 +50,9 @@
     const skip = (page - 1) * limit;
     const data = { skip, limit, page };
 
-    socket.emit("shiftTableFuelTimeLossParams", data, (response) => {
-      shiftTable = response;
-    });
+    console.log("📤 Emitting:", JSON.stringify(data));
+    socket.emit("shiftTableFuelTimeLossParams", data);
   }
-
   // ================================
   // PAGINATION HANDLERS
   // ================================
@@ -64,7 +61,6 @@
     if (page < shiftTable.totalPage) {
       page++;
       fetchShiftTable();
-      shiftTableParams();
     }
   }
 
@@ -72,21 +68,18 @@
     if (page > 1) {
       page--;
       fetchShiftTable();
-      shiftTableParams();
     }
   }
 
   async function handleFirstPage() {
     page = 1;
     fetchShiftTable();
-    shiftTableParams();
   }
 
   async function handleLastPage() {
     if (shiftTable.totalPage) {
       page = shiftTable.totalPage;
       fetchShiftTable();
-      shiftTableParams();
     }
   }
 
@@ -98,21 +91,12 @@
   // ================================
   // SOCKET LISTENERS
   // ================================
-  async function shiftTableParams() {
-    const skip = (page - 1) * limit;
-    const params = { skip, limit, page };
-
-    socket.emit("shiftTableFuelTimeLossParams", params);
-  }
 
   async function registerSocketListeners() {
     socket.on("connect", () => {
-      // console.log("Connected:", socket.id);
-      // fetch first page saat connect
       fetchCurrent();
       fetchShiftSummary();
       fetchShiftTable();
-      shiftTableParams();
     });
 
     socket.on("currentFuelTimeLoss:update", (payload) => {
@@ -145,10 +129,13 @@
   // AUTO-REFRESH SHIFT TABLE
   // ================================
   async function startAutoRefresh() {
-    stopAutoRefresh(); // pastikan tidak ada interval ganda
+    stopAutoRefresh();
+
     autoRefreshInterval = setInterval(() => {
-      fetchShiftTable(); // refresh page yang sedang dibuka
-    }, 60000); // tiap 60 detik
+      fetchShiftTable();
+    }, 60000);
+
+    // TIDAK ADA PANGGILAN fetchShiftTable() LANGSUNG DI FUNGSI INI
   }
 
   async function stopAutoRefresh() {
@@ -157,11 +144,12 @@
 
   onMount(async () => {
     await fetchShiftSummary();
-    await fetchShiftTable();
     await fetchCurrent();
+    await fetchShiftTable();
+
     await registerSocketListeners();
+
     await startAutoRefresh();
-    shiftTableParams();
 
     return () => {
       stopAutoRefresh();
