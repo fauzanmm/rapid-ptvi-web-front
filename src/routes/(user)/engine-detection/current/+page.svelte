@@ -49,14 +49,11 @@
 
   async function fetchShiftTable() {
     const skip = (page - 1) * limit;
+    const data = { skip, limit, page };
 
-    socket.emit(
-      "shiftTableFuelTimeLoss:request",
-      { skip, limit, page },
-      (response) => {
-        shiftTable = response;
-      }
-    );
+    socket.emit("shiftTableFuelTimeLossParams", data, (response) => {
+      shiftTable = response;
+    });
   }
 
   // ================================
@@ -67,6 +64,7 @@
     if (page < shiftTable.totalPage) {
       page++;
       fetchShiftTable();
+      shiftTableParams();
     }
   }
 
@@ -74,18 +72,21 @@
     if (page > 1) {
       page--;
       fetchShiftTable();
+      shiftTableParams();
     }
   }
 
   async function handleFirstPage() {
     page = 1;
     fetchShiftTable();
+    shiftTableParams();
   }
 
   async function handleLastPage() {
     if (shiftTable.totalPage) {
       page = shiftTable.totalPage;
       fetchShiftTable();
+      shiftTableParams();
     }
   }
 
@@ -97,6 +98,13 @@
   // ================================
   // SOCKET LISTENERS
   // ================================
+  async function shiftTableParams() {
+    const skip = (page - 1) * limit;
+    const params = { skip, limit, page };
+
+    socket.emit("shiftTableFuelTimeLossParams", params);
+  }
+
   async function registerSocketListeners() {
     socket.on("connect", () => {
       // console.log("Connected:", socket.id);
@@ -104,6 +112,7 @@
       fetchCurrent();
       fetchShiftSummary();
       fetchShiftTable();
+      shiftTableParams();
     });
 
     socket.on("currentFuelTimeLoss:update", (payload) => {
@@ -152,6 +161,7 @@
     await fetchCurrent();
     await registerSocketListeners();
     await startAutoRefresh();
+    shiftTableParams();
 
     return () => {
       stopAutoRefresh();
