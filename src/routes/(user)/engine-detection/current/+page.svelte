@@ -8,6 +8,7 @@
     shiftFuelTimeLoss,
     shiftSummaryFuelTimeLoss,
   } from "$lib/api/fuel-time-loss";
+  import { shiftFuelTimeLossDownloader } from "$lib/services/shift-fueltimeloss-download";
 
   moment.locale("id");
 
@@ -15,8 +16,6 @@
   let shiftSummary = {};
   let shiftTable = {};
   let crewText = "";
-
-  let department = "hatari";
 
   let page = 1;
   let limit = 50;
@@ -29,12 +28,12 @@
   // FETCHING DATA
   // ================================
   async function fetchCurrent() {
-    const result = await currentFuelTimeLoss(department);
+    const result = await currentFuelTimeLoss();
     return (data = result.data);
   }
 
   async function fetchShiftSummary() {
-    const result = await shiftSummaryFuelTimeLoss(department);
+    const result = await shiftSummaryFuelTimeLoss();
     const lossFuel = result.data.lossFuel.toFixed(2);
     const lossHour = prettyMilliseconds(result.data.lossHour * 1000, {
       colonNotation: true,
@@ -88,10 +87,17 @@
     lastPage = firstPage - 1 + limit;
   }
 
+  async function handleDataDownload() {
+    try {
+      await shiftFuelTimeLossDownloader();
+    } catch (error) {
+      console.error("Gagal memulai unduhan:", error);
+    }
+  }
+
   // ================================
   // SOCKET LISTENERS
   // ================================
-
   async function registerSocketListeners() {
     socket.on("connect", () => {
       fetchCurrent();
@@ -348,7 +354,9 @@
                 : "-"}</span
             >
           </p>
-          <button>download</button>
+          <button onclick={handleDataDownload} aria-label="dd">
+            <i class="fa-solid fa-download text-l text-white"></i>
+          </button>
         </div>
       </div>
 
