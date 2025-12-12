@@ -7,6 +7,9 @@
       <!-- <i class="fas fa-address-book text-white text-2xl mr-3"></i> -->
       <div class="text-white font-bold text-xl">RAPID</div>
     </a>
+    <!-- <div class=" rounded-xl m-0 px-4 py-0.5">
+      <img src="/Vale_logo.svg.png" alt="" class="text-xs w-16" />
+    </div> -->
     <h1 class="text-gray-100 font-bold text-xl">VALE Indonesia</h1>
     <nav>
       <ul class="flex space-x-6">
