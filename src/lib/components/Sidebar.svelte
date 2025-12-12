@@ -6,7 +6,6 @@
 
   let isOpen = false;
 
-  // Gunakan 'let' agar bisa ditetapkan ulang (re-assign)
   let routesList = [
     {
       name: "Production",

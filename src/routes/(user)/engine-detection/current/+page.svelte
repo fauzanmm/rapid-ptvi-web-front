@@ -50,7 +50,7 @@
     const skip = (page - 1) * limit;
     const data = { skip, limit, page };
 
-    console.log("📤 Emitting:", JSON.stringify(data));
+    // console.log("📤 Emitting:", JSON.stringify(data));
     socket.emit("shiftTableFuelTimeLossParams", data);
   }
   // ================================
@@ -130,6 +130,9 @@
   // ================================
   async function startAutoRefresh() {
     stopAutoRefresh();
+
+    // const skip = (page - 1) * limit;
+    // console.log({ skip, page, limit });
 
     autoRefreshInterval = setInterval(() => {
       fetchShiftTable();
