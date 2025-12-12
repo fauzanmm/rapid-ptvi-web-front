@@ -354,7 +354,12 @@
                 : "-"}</span
             >
           </p>
-          <button onclick={handleDataDownload} aria-label="dd">
+          <button
+            onclick={handleDataDownload}
+            aria-label="dd"
+            class="cursor-pointer"
+            title="Download data"
+          >
             <i class="fa-solid fa-download text-l text-white"></i>
           </button>
         </div>

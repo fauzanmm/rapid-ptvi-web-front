@@ -69,7 +69,8 @@
     <button
       on:click={toggle}
       aria-label="Toggle Sidebar"
-      class="py-2 px-3 rounded-[10px] hover:bg-gray-700 transition duration-200"
+      title="Menu"
+      class="cursor-pointer py-2 px-3 rounded-[10px] hover:bg-gray-700 transition duration-200"
     >
       <i class="fa-solid fa-bars text-xl"></i>
     </button>
@@ -102,6 +103,7 @@
         <a
           href={route.path}
           aria-label={route.name}
+          title={route.name}
           class="w-full py-2 px-3 rounded-[10px] flex flex-row hover:bg-gray-700 transition duration-200 items-center"
           class:bg-gray-700={isActive(route)}
         >
