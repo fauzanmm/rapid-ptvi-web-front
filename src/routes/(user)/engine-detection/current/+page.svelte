@@ -106,20 +106,20 @@
     });
 
     socket.on("currentFuelTimeLoss:update", (payload) => {
-      data = payload;
+      data = payload.data;
     });
 
     socket.on("shiftSummaryFuelTimeLoss:update", (payload) => {
       shiftSummary = {
-        lossFuel: payload.lossFuel.toFixed(2),
-        lossHour: prettyMilliseconds(payload.lossHour * 1000, {
+        lossFuel: payload.data.lossFuel.toFixed(2),
+        lossHour: prettyMilliseconds(payload.data.lossHour * 1000, {
           colonNotation: true,
         }),
       };
     });
 
     socket.on("shiftTableFuelTimeLoss:update", (payload) => {
-      shiftTable = payload;
+      shiftTable = payload.data;
       // console.log(shiftTable);
     });
   }
