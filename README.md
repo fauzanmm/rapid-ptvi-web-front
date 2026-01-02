@@ -86,7 +86,8 @@ You can preview the production build with `npm run preview`.
 
 - Node.js (v14 or higher)
 - npm (Node Package Manager)
-- Database connection (SQL Server)
+- API Endpoint
+- Socket backend Endpoint
 
 ### Installation
 
@@ -101,14 +102,8 @@ cd folder
 npm install
 
 # Create .env file in root directory with following variables
-DATABASE_URL_MAIN_MINECARE="sqlserver://ipserver:port;database=databasename;user=username;password=passwordname;encrypt=true;trustServerCertificate=true"
-DB_MAIN_MINECARE_USER="username"
-DB_MAIN_MINECARE_PASSWORD="passwordname"
-DB_MAIN_MINECARE_NAME="databasename"
-DB_MAIN_MINECARE_HOST="ipserver"
-
-# generate prisma client
-npm run generate
+VITE_URL_API='http://ipserver:port/api/v2'
+VITE_URL_SOCKET = 'http://ipserver:port'
 ```
 
 ### Development Mode
@@ -116,9 +111,6 @@ npm run generate
 ```bash
 # run apps
 npm run dev
-
-# run apps in port 3001
-npm run dev3001
 ```
 
 ### Production Mode
@@ -137,10 +129,9 @@ npm run preview
 
 1. Pastikan .env sudah disesuaikan dengan server nya
 
-   - IP Server menggunakan Server Production
-   - IP Database menggunakan Database Production Server
-   - Username Database menggunakan Read only user Database Production Server
-   - Password Database menggunakan password dari user read only Database Production Server
+   - IP API Server menggunakan Server Production
+   - IP Socket Server menggunakan Server Production
+   - Port sudah sesuai dengan Production
 
 2. Pastikan folder berikut sudah tersedia
 
@@ -286,7 +277,7 @@ npm run preview
    pm2 save
    ```
 
-   - Sebelum ke nomor selanjutnya, perlu dilanjutkan ke project `socket` dan `front`!
+   - Sebelum ke nomor selanjutnya, perlu dilanjutkan ke project `api` dan `socket`!
    - Hal yang perlu dilakukan adalah run apps lain menggunakan pm2
 
 5. Setup pm2-installer
