@@ -1,21 +1,25 @@
-# RAPID API - Backend
+# RAPID API - Front
 
 ### Site : PT Vale Indonesia
 
-Backend API Service untuk project RAPID Website, berfungsi untuk integrasi data, single source of truth, cube datamart, ataupun integrasi antar aplikasi.
+Frontend Svelte ini dikembangkan sebagai bagian dari proyek RAPID Website, berfungsi sebagai interface reporting untuk dataset yang telah dikembangkan, serta mendukung proses analisis cepat secara efisien.
 
-Pada dasarnya dataset yang dikembangkan berdasarkan case, kondisi, dan kebutuhan yang dialami oleh customer dari KMTS di region Indonesia. Sehingga API ini dapat menjadi salah satu data source yang terpercaya dan dapat digunakan untuk analisis, maupun reporting.
+Pada dasarnya frontend ini dibuat berdasarkan kebutuhan masing-masing site agar dapat menjawab masalah dan case yang sering terjadi pada operasional.
 
-Pada project backend ini menggunakan framework dari [`Sveltekit`](https://svelte.dev/).
+Pada project frontend ini menggunakan framework dari [`Sveltekit`](https://svelte.dev/).
 
 ## 🚀 Main Feature
 
-- RESTful API dengan Sveltekit framework
-- Database connection via Prisma ORM
-- Struktur folder modular
-- Environment-based configuration
-- Siap untuk deployment
-- Dokumentasi bisa di lihat pada [`http://ip:port/api-docs`]
+### Engine Detection
+
+- Current and Shift Summary Report
+  - Card summary of Loss Hour and Loss Fuel by Shift
+  - Card Current Truck/Equipment who meet the condition
+  - Table list general information Engine Detection by Shift
+  - Table chart detail Engine Detection by Shift
+  - Dokumentasi bisa di lihat pada [`http://ip:port`]
+- Month Summary Historical
+  - Under development progress
 
 ## 📃 Datamart
 
@@ -38,10 +42,6 @@ api/
  │ ├── exception-(year-month-date).log
  │ └── rejection-(year-month-date).log
  ├── node_modules/
- ├── prisma-main-minecare-database/         # 1st database
- │ ├── main-minecare-database-client-types/ # client export file prisma, `npm run generate` to create this
- │ ├── prisma.config.ts     # config 1st database
- │ └── schema.prisma        # schema 1st database
  ├── src/
  │ ├── lib/
  │ │ ├── application/
@@ -73,29 +73,21 @@ api/
  │ │       │   └── +server.ts
  │ │       ├── +layout.svelte
  │ │       └── +page.svelte
- │ ├── types/
- │ │ ├── assets.d.ts        # declare typescript assets
- │ │ ├── css.d.ts           # declare typescript css style
- │ │ └── swagger-ui-dist.d.ts   # declare typescript swagger-ui (front)
- │ ├── app.d.ts             # global declare typescript
- │ ├── app.html
- │ └── hooks.server.ts      # hooks server (cors in here)
+ │ ├── app.css
+ │ └── app.html
  ├── static/
- │ ├── openapi.json
- │ ├── openapi.yaml         # in use
- │ └── robots.txt
+ │ ├── fontawesome/
+ │ ├── fonts/               # in use
+ │ └── Komatsu_favicon_64.png
  ├── .env                   # database url (check notion or ask administrator)
  ├── .gitignore
  ├── .npmrc/
- ├── .prettierignore
- ├── .prettierrc
  ├── ecosystem.config.cjs   # configuration for pm2 with rapid-backend aplication name
- ├── eslint.config.js
+ ├── jsconfig.json
  ├── package-lock.json
  ├── package.json
  ├── README.md
  ├── svelte.config.js
- ├── tsconfig.json
  └── vite.config.ts
 ```
 
