@@ -21,15 +21,6 @@ Pada project frontend ini menggunakan framework dari [`Sveltekit`](https://svelt
 - Month Summary Historical
   - Under development progress
 
-## 📃 Datamart
-
-- Engine Detection
-  - Current Fuel Time Loss
-  - Current Shift Fuel Time Loss
-  - Current Shift Summary Fuel Time Loss
-  - Current Shift Page Fuel Tiem Loss
-  - Monthly Summarize Fuel Time Loss
-
 ## 📁 Project Structure
 
 ```bash
@@ -44,35 +35,29 @@ api/
  ├── node_modules/
  ├── src/
  │ ├── lib/
- │ │ ├── application/
- │ │ │ └── logging.ts       # Logger configuration
- │ │ ├── assets/
- │ │ │ └── favicon_komatsu.png
- │ │ ├── database/
- │ │ │ └── main-minecare-prisma-client.ts   # config logger when accessing prisma
- │ │ ├── error/
- │ │ │ └── error-response.ts                # error declaration
- │ │ └── service/
- │ │   ├── current-fueltimeloss-service.ts
- │ │   ├── shift-fueltimeloss-service.ts
- │ │   ├── shift-summary-fueltimeloss-service.ts
- │ │   └── shift-table-fueltimeloss-service.ts
+ │ │ ├── api/
+ │ │ │ ├── fuel-time-loss.js                # fetching data Engine Detection
+ │ │ │ └── socket.js                        # connection with socket (backend)
+ │ │ ├── components/
+ │ │ │ ├── Header.svelte
+ │ │ │ └── Sidebar.svelte
+ │ │ ├── data/
+ │ │ ├── services/
+ │ │ │ ├── shift-fueltimeloss-download.js
+ │ │ │ └── shift-fueltimeloss-shiftconvert.js
+ │ │ └── services/
+ │ │   └── loading.js
  │ ├── routes/
- │ │ ├── (public-api)/
- │ │ │ └── api-docs.ts
- │ │ │   └── +page.svelte
- │ │ └── api/
- │ │   └── v2/
- │ │     └── fueltimeloss/
- │ │       ├── current/
- │ │       │ └── +server.ts
- │ │       ├── shift/
- │ │       │ ├── summary/
- │ │       │ │ └── +server.ts
- │ │       │ └── table/
- │ │       │   └── +server.ts
- │ │       ├── +layout.svelte
- │ │       └── +page.svelte
+ │ │ ├── (user)/                # Routing for user/member only
+ │ │ │ ├── engine-detection/
+ │ │ │ │ ├── current/           # Current and Shiftly Report
+ │ │ │ │ │ └── +page.svelte
+ │ │ │ │ └── historical/        # Historical and Monthly Report
+ │ │ │ │   └── +page.svelte
+ │ │ │ └── +layout.svelte       # Layout Engine Detection
+ │ │ ├── +layout.js             # Off the SSR
+ │ │ ├── +layout.svelte         # Render loading state
+ │ │ └── +page.svelte           # Title, and Home Page
  │ ├── app.css
  │ └── app.html
  ├── static/
