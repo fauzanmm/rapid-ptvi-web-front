@@ -1,4 +1,4 @@
-# RAPID API - Front
+# RAPID FRONT - Frontend
 
 ### Site : PT Vale Indonesia
 
@@ -24,7 +24,7 @@ Pada project frontend ini menggunakan framework dari [`Sveltekit`](https://svelt
 ## 📁 Project Structure
 
 ```bash
-api/
+front/
  ├── .svelte-kit/           # svelte config, `npm install` to create this
  ├── build/                 # builder file (ready to prod)
  ├── logs/
@@ -264,10 +264,10 @@ npm run preview
 
 4. Start application
 
-   - Start API Application `(powershell recommended)`
+   - Start FRONT Application `(powershell recommended)`
 
    ```bash
-   # Masuk ke directory project API
+   # Masuk ke directory project FRONT
    cd "C:\KMTSFile\Rapid-PTVI\front"
 
    # Run the apps
@@ -352,7 +352,7 @@ Jika ingin melakukan update pada aplikasi maka ada 2 section yang perlu dilakuka
 
    ```bash
    # reload
-   pm2 reload rapid-api
+   pm2 reload rapid-front
 
    # cek status
    pm2 status
